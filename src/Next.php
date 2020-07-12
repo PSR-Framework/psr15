@@ -6,6 +6,7 @@ namespace Furious\Psr15;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SplQueue;
 
@@ -17,10 +18,12 @@ final class Next implements RequestHandlerInterface
     /**
      * Next constructor.
      * @param SplQueue $queue
+     * @param RequestHandlerInterface $handler
      */
-    public function __construct(?SplQueue $queue, RequestHandlerInterface $callback)
+    public function __construct(?SplQueue $queue, RequestHandlerInterface $handler)
     {
         $this->queue = clone $queue;
+        $this->handler = $handler;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -29,6 +32,7 @@ final class Next implements RequestHandlerInterface
             return $this->handler->handle($request);
         }
 
+        /** @var MiddlewareInterface $middleware */
         $middleware = $this->queue->dequeue();
 
         $next = clone $this;
