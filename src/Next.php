@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Furious\Psr15;
 
+use Furious\Psr15\Exception\MiddlewareAlreadyCalledException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -28,6 +29,10 @@ final class Next implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        if (null === $this->queue) {
+            throw new MiddlewareAlreadyCalledException();
+        }
+
         if ($this->queue->isEmpty()) {
             return $this->handler->handle($request);
         }
