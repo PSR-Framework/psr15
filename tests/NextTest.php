@@ -136,7 +136,7 @@ class NextTest extends TestCase
         $this->assertSame($response, $next->handle($this->request));
     }
 
-    public function testMiddlewareReturnResponse(): void 
+    public function testMiddleware(): void
     {
         $handler = $this->prophesize(RequestHandlerInterface::class);
         $handler
@@ -192,9 +192,9 @@ class NextTest extends TestCase
         $next->handle($this->request);
     }
 
-    public function createFallbackHandler(ResponseInterface $response = null) : RequestHandlerInterface
+    public function createFallbackHandler(ResponseInterface $response = null): RequestHandlerInterface
     {
-        $response = $response ?: $this->createDefaultResponse();
+        $response = $response ?: $this->testCreateResponse();
 
         return new class ($response) implements RequestHandlerInterface
         {
@@ -212,7 +212,7 @@ class NextTest extends TestCase
         };
     }
 
-    public function createDefaultResponse(): ResponseInterface
+    public function testCreateResponse(): ResponseInterface
     {
         $this->response = $this->prophesize(ResponseInterface::class);
         return $this->response->reveal();
