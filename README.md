@@ -11,7 +11,13 @@ PSR-15 implementation for PHP 7.4+
 [![Monthly Downloads](https://poser.pugx.org/furious/psr15/d/monthly.png)](https://packagist.org/packages/furious/psr15)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
+Install:
 
-Part of micro framework "furious" (soon)
-
-composer require furious/psr15
+    composer require furious/psr15
+    
+Use:
+    
+    $pipeline = new Furious\Psr15\MiddlewarePipe;
+    
+    $this->pipeline->pipe(new Psr15Middleware);
+    
